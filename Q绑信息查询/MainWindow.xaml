@@ -1,0 +1,253 @@
+﻿<Window x:Class="Q绑信息查询.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Q绑信息查询"
+        mc:Ignorable="d"
+        Title="Q绑信息查询" Height="600" Width="350" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen" 
+        Background="{x:Null}">
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded" >
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Duration="00:00:01" Storyboard.TargetProperty="Opacity" From="0" To="1" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
+
+    <Window.Resources>
+        <ControlTemplate x:Key="SystemCloseBtn" TargetType="Button">
+            <Border Background="Transparent" Name="back" CornerRadius="0 3 0 0">
+                <Path Data="M0 0 12 12M0 12 12 0" Stroke="White" StrokeThickness="1" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="back" Property="Background" Value="DarkRed"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="back" Property="Background" Value="#E54646"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="SystemMinBtn" TargetType="Button">
+            <Border Background="Transparent" Name="back">
+                <Path Data="M0 12 12 12" Stroke="White" StrokeThickness="1" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="back" Property="Background" Value="#44FFFFFF"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="back" Property="Background" Value="#66FFFFFF"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="ButtonStyle" TargetType="Button">
+            <Border Background="#66FFFFFF" CornerRadius="3">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" Opacity="1" BlurRadius="10" ShadowDepth="0" Direction="0"/>
+                </Border.Effect>
+                <Grid>
+                    <Border Background="#80FFFFFF" Visibility="Hidden" CornerRadius="3" Name="back"/>
+                    <ContentControl Content="{TemplateBinding Content}" Foreground="Black"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    FontSize="13"/>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="back" Property="Visibility" Value="Visible"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="back" Property="Background" Value="#44FFFFFF"/>
+                    <Setter TargetName="back" Property="Visibility" Value="Visible"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
+        <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
+        <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
+        <Style x:Key="TextBoxStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource TextBox.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="AllowDrop" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
+                                Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock FontFamily="./Fonts/#iconfont" Text="&#xe61b;" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#898989"/>
+                                <ScrollViewer x:Name="PART_ContentHost" Grid.Column="1" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
+                                              VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                        <Condition Property="IsSelectionActive" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="TextBoxStyle1" TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource TextBox.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="AllowDrop" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
+                            Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock FontFamily="./Fonts/#iconfont" Text="&#xe62d;" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#898989"/>
+                                <ScrollViewer x:Name="PART_ContentHost" Grid.Column="1" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
+                                    VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                        <Condition Property="IsSelectionActive" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+        
+    </Window.Resources>
+    <Border CornerRadius="3" Margin="10">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="15" Opacity="1" ShadowDepth="0" Direction="0" Color="Black"/>
+        </Border.Effect>
+        <Border.Background>
+            <ImageBrush ImageSource="./Images/bkg.jpg" Opacity="0.8"/>
+        </Border.Background>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Q绑信息查询" Margin="6" Foreground="Purple" FontSize="13"/>
+            <Border Background="#01FFFFFF" CornerRadius="3 3 0 0" MouseMove="Border_MouseMove"/>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button x:Name="SystemBtnMin" Width="30" Height="30" Template="{StaticResource SystemMinBtn}" Click="SystemBtnMin_Click"/>
+                <Button x:Name="SystemBtnClose" Width="30" Height="30" Template="{StaticResource SystemCloseBtn}" Click="SystemBtnClose_Click"/>
+            </StackPanel>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition  Height="40"/>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="号码:" FontSize="13" VerticalAlignment="Center" Margin="30 0 10 0" Foreground="#C82E31"/>
+                    <TextBox x:Name="txtInput1" Width="200" Height="30" HorizontalAlignment="Center" Style="{DynamicResource TextBoxStyle}" />
+                </StackPanel>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button Template="{StaticResource ButtonStyle}" Width="120" Height="30" Content="查询绑定" Click="BtnQQSearch_Click"/>
+                    <Button Grid.Column="1" Template="{StaticResource ButtonStyle}" Width="120" Height="30" Content="手机反查" Click="BtnMobileSearch_Click"/>
+                </Grid>
+                <StackPanel Grid.Row="2">
+                    <TextBox x:Name="txtReturn1" Height="100" Margin="0 15" TextWrapping="Wrap" BorderThickness="0" FontSize="13" Background="#50FFFFFF"/>
+                    <TextBlock Text="英雄联盟查询" FontSize="13" Foreground="Purple" Margin="6 3"/>
+                </StackPanel>
+
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition  Height="40"/>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="号码:" FontSize="13" VerticalAlignment="Center" Margin="30 0 10 0" Foreground="#C82E31"/>
+                    <TextBox x:Name="txtInput2" Width="200" Height="30" HorizontalAlignment="Center" Style="{DynamicResource TextBoxStyle1}" />
+                </StackPanel>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="btnQQSearchLOL" Template="{StaticResource ButtonStyle}" Width="120" Height="30" Content="查询游戏" Click="BtnQQSearchLOL_Click"/>
+                    <Button x:Name="btnIDSearchLOL" Grid.Column="1" Template="{StaticResource ButtonStyle}" Width="120" Height="30" Content="昵称反查" Click="BtnIDSearchLOL_Click"/>
+                </Grid>
+                <StackPanel Grid.Row="2">
+                    <TextBox x:Name="txtReturn2" Height="100" Margin="0 15" TextWrapping="Wrap" BorderThickness="0" FontSize="13" Background="#50ffffff"/>
+                    <TextBlock x:Name="lbTips" Foreground="Red" FontSize="13" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </StackPanel>
+
+            </Grid>
+            <TextBlock Grid.Row="3" Text="(仅供学习交流,切勿非法使用!)" Foreground="Black" FontSize="13" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="6 5"/>
+            <TextBlock Grid.Row="3" Text="Powered By zsyf       QQ:2735903433" Foreground="Purple" FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="6 5"/>
+        </Grid>
+    </Border>
+</Window>
